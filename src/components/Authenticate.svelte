@@ -11,6 +11,10 @@
             return;
         }
     }
+
+    function handleRegister() {
+        register = !register;
+    }
 </script>
 <div class="authContainer">
     <form>
@@ -26,10 +30,12 @@
             <p class = {password ? 'above' : 'center'}>Contraseña</p>
             <input bind:value={password} type="password" placeholder="Contraseña" />
         </label>
+        {#if register}
         <label>
             <p class = {confirmPass ? 'above' : 'center'}>Confirmar Contraseña</p>
             <input bind:value={confirmPass} type="password" placeholder="Confirmar Contraseña" />
         </label>
+        {/if}
         <button type="button">Ingresar</button>
     </form>
     <div class="options">
@@ -37,12 +43,12 @@
         {#if register}
         <div>
             <p>Tiene una cuenta?</p>
-            <p>Inicio de Sesión</p>
+            <p on:click={handleRegister} on on:keydown={() => {}}>Inicio de Sesión</p>
         </div>
         {:else}
         <div>
             <p>No tienes una cuenta?</p>
-            <p>Registrarse</p>
+            <p on:click={handleRegister} on on:keydown={() => {}}>Registrarse</p>
         </div>
         {/if}
     </div>

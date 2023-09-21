@@ -1,14 +1,62 @@
+<script>
+    let todoList = ['Lista de items'];
+    let currTodo = "";
+    let error = false;
+
+    function addTodo() {
+        error = false;
+        if (!currTodo) {
+            error = true;
+        }
+        todoList = [...todoList, currTodo];
+        currTodo = "";
+    }
+
+    function editTodo(index) {
+        let newTodoList = todoList.filter((val , i) => {
+            return i !== index;
+        });
+        currTodo = todoList[index]
+        todoList = newTodoList
+    }
+
+    function removeTodo(index) {
+        let newTodoList = todoList.filter((val , i) => {
+            return i !== index;
+        });
+        todoList = newTodoList
+    }
+</script>
+
 <div class="mainContainer">
     <div class="headerContainer">
         <h1>Todo Listo</h1>
-        <button><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
+        <div class="headerBtns">
+            <button><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
+            <button><i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión</button>
+        </div>
     </div>
     <main>
-
+        {#if todoList.length === 0}
+        <p>
+            La lista esta vacia
+        </p>
+        {/if}
+        {#each todoList as todo, index }
+        <div>
+            <p>
+                {index+1}. {todo}
+            </p>
+            <div class="actions">
+                <i on:click={() => {editTodo(index)}} on:keydown= {() => {}} class="fa-regular fa-pen-to-square"></i>
+                <i on:click={() => {removeTodo(index)}} on:keydown= {() => {}} class="fa-solid fa-trash-can"></i>
+            </div>
+        </div>
+        {/each}
     </main>
-    <div class="enterTodo">
-        <input type="text" placeholder="Ingresar"/>
-        <button>Agregar</button>
+    <div class={"enterTodo" + (error ? "errorBorder" : "")}>
+        <input bind:value={currTodo} type="text" placeholder="Ingresar"/>
+        <button on:click={addTodo}>Agregar</button>
     </div>
 </div>
 
@@ -30,6 +78,12 @@
         justify-content: space-between;
     }
 
+    .headerBtns {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
     .headerContainer button {
         background: #003c5b;
         color: white;
@@ -40,6 +94,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        cursor: pointer;
     }
 
     .headerContainer button i {
@@ -55,6 +110,29 @@
         flex-direction: column;
         gap: 8px;
         flex: 1;
+    }
+
+    .todo {
+        border-left: 1px solid cyan;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 1.3rem;
+    }
+
+    .actions i:hover {
+        color: coral;
+    }
+
+    .actions i {
+        cursor: pointer;
     }
 
     .enterTodo {
@@ -78,7 +156,7 @@
     }
 
     .enterTodo button {
-        padding: 0 14px;
+        padding: 0 28px;
         background: #003c5b;
         border: none;
         color: cyan;
